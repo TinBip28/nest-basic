@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import mongoose, { Model } from 'mongoose';
+import mongoose from 'mongoose';
 import { User, UserDocument } from './schemas/user.schemas';
 import { compareSync, genSaltSync, hashSync } from 'bcryptjs';
 import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
@@ -35,7 +35,7 @@ export class UsersService {
 
   findOne(id: string) {
     if (!mongoose.Types.ObjectId.isValid(id)) {
-      return 'Not found';
+      return 'Not Valid id';
     }
     return this.userModel.findOne({
       _id: id,
@@ -56,6 +56,7 @@ export class UsersService {
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return 'Not found';
     }
+    updateUserDto.password = this.hashPassword(updateUserDto.password);
     const updateUser = await this.userModel.updateOne(
       { _id: id },
       { ...updateUserDto },
