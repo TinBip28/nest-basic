@@ -17,7 +17,6 @@ export class CompaniesService {
   ) {}
 
   async create(createCompanyDto: CreateCompanyDto, user: IUser) {
-    console.log(user);
     return await this.companyModel.create({
       ...createCompanyDto,
       createdBy: {
