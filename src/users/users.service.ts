@@ -46,8 +46,8 @@ export class UsersService {
 
   async findAll(currentPage: number, limit: number, qs: string) {
     const { filter, sort, projection, population } = aqp(qs);
-    delete filter.page;
-    delete filter.limit;
+    delete filter.current;
+    delete filter.pageSize;
     let offset = (currentPage - 1) * limit;
     let defaultLimit = limit ? limit : 10;
     const totalItems = (await this.userModel.find(filter)).length;
@@ -84,6 +84,12 @@ export class UsersService {
   findOneByUsername(username: string) {
     return this.userModel.findOne({
       email: username,
+    });
+  }
+
+  findUserToken(refreshToken: string) {
+    return this.userModel.findOne({
+      refreshToken,
     });
   }
 
@@ -135,5 +141,9 @@ export class UsersService {
       password: hashedPassword,
     });
     return { _id: newUser._id, email: newUser.email };
+  }
+
+  async updateUserToken(refreshToken: string, _id: string) {
+    return this.userModel.updateOne({ _id: _id }, { refreshToken });
   }
 }
