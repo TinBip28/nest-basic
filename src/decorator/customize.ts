@@ -15,12 +15,5 @@ export const User = createParamDecorator(
   },
 );
 
-export const Company = createParamDecorator(
-  (data: unknown, ctx: ExecutionContext) => {
-    const request = ctx.switchToHttp().getRequest();
-    return request.user;
-  },
-);
-
 export const ResponseMessage = (message: string) =>
   SetMetadata(RESPONSE_MESSAGE, message);

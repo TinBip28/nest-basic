@@ -27,6 +27,7 @@ import { JobModule } from './job/job.module';
     }),
 
     UsersModule,
+
     CompaniesModule,
 
     AuthModule,

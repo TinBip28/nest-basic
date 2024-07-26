@@ -45,12 +45,14 @@ export class CreateJobDto {
   @IsNotEmpty({ message: 'Mô tả công việc không được để trống' })
   description: string;
 
-  @IsNotEmpty({ message: 'Ngày bắt đầu công việc không được để trống' })
+  @IsNotEmpty({ message: 'Ngày bắt đầu không được để trống' })
   @IsDate()
+  @Type(() => Date)
   startDate: Date;
 
-  @IsNotEmpty({ message: 'Ngày kết thúc công việc không được để trống' })
+  @IsNotEmpty({ message: 'Ngày kết thúc không được để trống' })
   @IsDate()
+  @Type(() => Date)
   endDate: Date;
 
   @IsNotEmpty({ message: 'Trạng thái công việc không được để trống' })

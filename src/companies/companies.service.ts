@@ -7,7 +7,6 @@ import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 import { IUser } from 'src/users/users.interface';
 import mongoose from 'mongoose';
 import aqp from 'api-query-params';
-import { isEmpty } from 'class-validator';
 
 @Injectable()
 export class CompaniesService {
@@ -53,6 +52,10 @@ export class CompaniesService {
 
   findOne(id: number) {
     return `This action returns a #${id} company`;
+  }
+
+  findById(id: string) {
+    return this.companyModel.findById(id);
   }
 
   async update(id: string, updateCompanyDto: UpdateCompanyDto, user: IUser) {

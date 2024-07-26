@@ -9,11 +9,13 @@ import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 import aqp from 'api-query-params';
 import { IUser } from './users.interface';
 import { User } from 'src/decorator/customize';
+import { CompaniesService } from 'src/companies/companies.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(UserM.name) private userModel: SoftDeleteModel<UserDocument>,
+    private companyService: CompaniesService,
   ) {}
 
   hashPassword(password: string) {
@@ -26,6 +28,12 @@ export class UsersService {
     const isExist = await this.userModel.findOne({
       email: createUserDto.email,
     });
+    const companyExits = await this.companyService.findById(
+      createUserDto.company._id.toString(),
+    );
+    if (!companyExits) {
+      throw new BadRequestException('Không tìm thấy công ty');
+    }
     if (isExist) {
       throw new BadRequestException('Email này đã được sử dụng');
     }
@@ -34,6 +42,10 @@ export class UsersService {
       ...createUserDto,
       password: hashedPassword,
       company: {
+        _id: createUserDto.company._id,
+        name: companyExits.name,
+      },
+      createdBy: {
         _id: user._id,
         name: user.name,
       },
