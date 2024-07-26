@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
 import { Company, CompanyDocument } from './schemas/company.schema';
@@ -29,14 +29,16 @@ export class CompaniesService {
     const { filter, sort, projection, population } = aqp(qs);
     delete filter.current;
     delete filter.pageSize;
-    let offset = (currentPage - 1) * limit;
-    let defaultLimit = limit ? limit : 10;
+    let offset = (+currentPage - 1) * +limit;
+    let defaultLimit = +limit ? +limit : 10;
     const totalItems = (await this.companyModel.find(filter)).length;
-    const totalPages = Math.ceil(totalItems / limit);
+    const totalPages = Math.ceil(totalItems / defaultLimit);
     const result = await this.companyModel
       .find(filter)
+      .limit(limit)
       .skip(offset)
-      .sort(sort as any)
+      // @ts-ignore
+      .sort(sort)
       .populate(population)
       .exec();
     return {
@@ -50,11 +52,17 @@ export class CompaniesService {
     };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} company`;
+  findOne(id: string) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return 'Not Valid id';
+    }
+    return this.companyModel.findById(id);
   }
 
   findById(id: string) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw new UnauthorizedException('Id invalid');
+    }
     return this.companyModel.findById(id);
   }
 

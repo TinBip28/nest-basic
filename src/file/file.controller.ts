@@ -15,7 +15,7 @@ import { FileService } from './file.service';
 import { CreateFileDto } from './dto/create-file.dto';
 import { UpdateFileDto } from './dto/update-file.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { Public } from 'src/decorator/customize';
+import { Public, ResponseMessage } from 'src/decorator/customize';
 
 @Controller('file')
 export class FileController {
@@ -24,13 +24,14 @@ export class FileController {
   @Public()
   @Post('upload')
   // file này là tên của key trong form-data
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('fileUpload'))
+  @ResponseMessage('Upload single file')
   uploadFile(
     @UploadedFile(
       new ParseFilePipeBuilder()
         .addFileTypeValidator({
           fileType:
-            /^(jpg|jpeg|png|image\/png|gif|txt|pdf|application\/pdf|doc|docx|text\/plain)$/i,
+            /^(jpg|jpeg|image\/jpeg|png|image\/png|gif|txt|pdf|application\/pdf|doc|docx|text\/plain)$/i,
         })
         .addMaxSizeValidator({
           maxSize: 2000 * 1024,
@@ -41,7 +42,7 @@ export class FileController {
     )
     file: Express.Multer.File,
   ) {
-    console.log(file);
+    return file.filename;
   }
 
   @Get()

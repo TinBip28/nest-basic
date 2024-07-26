@@ -60,12 +60,13 @@ export class UsersService {
     const { filter, sort, projection, population } = aqp(qs);
     delete filter.current;
     delete filter.pageSize;
-    let offset = (currentPage - 1) * limit;
-    let defaultLimit = limit ? limit : 10;
+    let offset = (+currentPage - 1) * +limit;
+    let defaultLimit = +limit ? +limit : 10;
     const totalItems = (await this.userModel.find(filter)).length;
-    const totalPages = Math.ceil(totalItems / limit);
+    const totalPages = Math.ceil(totalItems / +limit);
     const result = await this.userModel
       .find(filter)
+      .limit(+limit)
       .skip(offset)
       .sort(sort as any)
       .select('-password')
@@ -109,10 +110,10 @@ export class UsersService {
     return compareSync(password, hashedPassword);
   }
 
-  async update(updateUserDto: UpdateUserDto, @User() user: IUser) {
+  async update(id: string, updateUserDto: UpdateUserDto, @User() user: IUser) {
     updateUserDto.password = this.hashPassword(updateUserDto.password);
     const updateUser = await this.userModel.updateOne(
-      { _id: updateUserDto._id },
+      { _id: id },
       {
         ...updateUserDto,
         updatedBy: {

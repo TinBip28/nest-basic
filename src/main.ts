@@ -23,6 +23,9 @@ async function bootstrap() {
   app.use(cookieParser());
 
   app.useGlobalInterceptors(new TransformInterceptor(reflector));
+
+  app.useStaticAssets(join(__dirname, '..', 'public'));
+  app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setGlobalPrefix('api');
   app.enableVersioning({
     type: VersioningType.URI,

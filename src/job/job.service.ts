@@ -29,6 +29,7 @@ export class JobService {
       company: {
         _id: createJobDto.company._id,
         name: companyExits.name,
+        logo: companyExits.logo,
       },
       createdBy: {
         _id: user._id,
@@ -42,12 +43,13 @@ export class JobService {
     const { filter, sort, projection, population } = aqp(qs);
     delete filter.current;
     delete filter.pageSize;
-    let offset = (currentPage - 1) * limit;
-    let defaultLimit = limit ? limit : 10;
+    let offset = (+currentPage - 1) * +limit;
+    let defaultLimit = +limit ? +limit : 10;
     const totalItems = (await this.jobModel.find(filter)).length;
-    const totalPages = Math.ceil(totalItems / limit);
+    const totalPages = Math.ceil(totalItems / +limit);
     const result = await this.jobModel
       .find(filter)
+      .limit(+limit)
       .skip(offset)
       .sort(sort as any)
       .select('-password')
@@ -73,9 +75,9 @@ export class JobService {
     });
   }
 
-  async update(updateJobDto: UpdateJobDto, @User() user: IUser) {
+  async update(id: string, updateJobDto: UpdateJobDto, @User() user: IUser) {
     const updateJob = await this.jobModel.updateOne(
-      { _id: updateJobDto._id },
+      { _id: id },
       {
         ...updateJobDto,
         updatedBy: {

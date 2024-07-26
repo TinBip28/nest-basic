@@ -25,7 +25,7 @@ export class JobController {
     return this.jobService.create(createJobDto, user);
   }
 
-  @ResponseMessage('fetching jobs')
+  @ResponseMessage('fetching jobs with pagination')
   @Public()
   @Get()
   findAll(
@@ -45,8 +45,12 @@ export class JobController {
 
   @ResponseMessage('update a job')
   @Patch(':id')
-  update(@Body() updateJobDto: UpdateJobDto, @User() user: IUser) {
-    return this.jobService.update(updateJobDto, user);
+  update(
+    @Param('id') id: string,
+    @Body() updateJobDto: UpdateJobDto,
+    @User() user: IUser,
+  ) {
+    return this.jobService.update(id, updateJobDto, user);
   }
 
   @ResponseMessage('delete a job')
