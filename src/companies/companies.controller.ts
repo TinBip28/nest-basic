@@ -16,7 +16,6 @@ import { UpdateCompanyDto } from './dto/update-company.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { IUser } from 'src/users/users.interface';
 import { Public, ResponseMessage, User } from 'src/decorator/customize';
-import mongoose from 'mongoose';
 
 @Controller('companies')
 export class CompaniesController {
