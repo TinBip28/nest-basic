@@ -1,4 +1,4 @@
-import { IsBoolean, IsNotEmpty } from 'class-validator';
+import { IsArray, IsBoolean, IsMongoId, IsNotEmpty } from 'class-validator';
 import mongoose from 'mongoose';
 
 export class CreateRoleDto {
@@ -13,5 +13,7 @@ export class CreateRoleDto {
   isActive: boolean;
 
   @IsNotEmpty({ message: 'Permissions không được để trống' })
+  @IsMongoId({ each: true, message: 'Mỗi permission là một mongo object id' })
+  @IsArray({ message: 'Permission là array !' })
   permissions: mongoose.Schema.Types.ObjectId[];
 }

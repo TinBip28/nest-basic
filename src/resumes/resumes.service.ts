@@ -82,8 +82,13 @@ export class ResumesService {
     if (!mongoose.Types.ObjectId.isValid(id)) {
       throw new BadRequestException('Id không hợp lệ');
     }
-    let cv = await this.resumeModel.findById(id);
-    return cv;
+    return this.resumeModel
+      .find({ _id: id })
+      .sort('-createdAt')
+      .populate([
+        { path: 'companyId', select: { name: 1 } },
+        { path: 'jobId', select: { name: 1 } },
+      ]);
   }
 
   async update(_id: string, status: string, user: IUser) {
@@ -94,7 +99,7 @@ export class ResumesService {
     const updated = await this.resumeModel.findByIdAndUpdate(
       { _id },
       {
-        status,
+        status: status,
         updatedBy: { _id: user._id, email: user.email },
         $push: {
           history: {

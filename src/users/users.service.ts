@@ -91,13 +91,22 @@ export class UsersService {
       .findOne({
         _id: id,
       })
-      .select('-password');
+      .select('-password')
+      .populate({
+        path: 'role',
+        select: { _id: 1, name: 1 },
+      });
   }
 
   findOneByUsername(username: string) {
-    return this.userModel.findOne({
-      email: username,
-    });
+    return this.userModel
+      .findOne({
+        email: username,
+      })
+      .populate({
+        path: 'role',
+        select: { _id: 1, name: 1, permissions: 1 },
+      });
   }
 
   findUserToken(refreshToken: string) {
@@ -129,6 +138,13 @@ export class UsersService {
   async remove(id: string, @User() user: IUser) {
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return 'Not found';
+    }
+    if (user._id === id) {
+      throw new BadRequestException('Không thể xóa chính mình');
+    }
+    const userDelete = await this.userModel.findOne({ _id: id });
+    if (userDelete.email === 'admin@gmail.com') {
+      throw new BadRequestException('Không thể xóa admin');
     }
     await this.userModel.updateOne(
       { _id: id },

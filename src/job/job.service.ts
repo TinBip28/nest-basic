@@ -52,7 +52,6 @@ export class JobService {
       .limit(+limit)
       .skip(offset)
       .sort(sort as any)
-      .select('-password')
       .populate(population)
       .exec();
     return {
