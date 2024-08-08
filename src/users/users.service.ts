@@ -10,12 +10,15 @@ import aqp from 'api-query-params';
 import { IUser } from './users.interface';
 import { User } from 'src/decorator/customize';
 import { CompaniesService } from 'src/companies/companies.service';
+import { Role, RoleDocument } from 'src/roles/schemas/role.schemas';
+import { USER_ROLE } from 'src/databases/sample';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(UserM.name) private userModel: SoftDeleteModel<UserDocument>,
     private companyService: CompaniesService,
+    @InjectModel(Role.name) private roleModel: SoftDeleteModel<RoleDocument>,
   ) {}
 
   hashPassword(password: string) {
@@ -105,13 +108,14 @@ export class UsersService {
       })
       .populate({
         path: 'role',
-        select: { _id: 1, name: 1, permissions: 1 },
+        select: { name: 1 },
       });
   }
 
   findUserToken(refreshToken: string) {
-    return this.userModel.findOne({
-      refreshToken,
+    return this.userModel.findOne({ refreshToken }).populate({
+      path: 'role',
+      select: { name: 1 },
     });
   }
 
@@ -159,17 +163,25 @@ export class UsersService {
   }
 
   async register(user: RegisterDto) {
-    const isExist = await this.userModel.findOne({ email: user.email });
+    const { name, email, password, age, gender, address } = user;
+    const isExist = await this.userModel.findOne({ email: email });
     if (isExist) {
-      throw new BadRequestException('Email này đã được sử dụng');
+      throw new BadRequestException(`Email : ${email} này đã được sử dụng`);
     }
+
+    const userRole = await this.roleModel.findOne({ name: USER_ROLE });
+
     const hashedPassword = this.hashPassword(user.password);
     let newUser = await this.userModel.create({
-      ...user,
-      role: 'USER',
+      name,
+      email,
+      age,
+      gender,
+      address,
+      role: userRole._id,
       password: hashedPassword,
     });
-    return { _id: newUser._id, email: newUser.email };
+    return newUser;
   }
 
   async updateUserToken(refreshToken: string, _id: string) {
