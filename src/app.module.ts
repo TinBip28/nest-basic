@@ -8,11 +8,13 @@ import { AuthModule } from './auth/auth.module';
 import { softDeletePlugin } from 'soft-delete-plugin-mongoose';
 import { CompaniesModule } from './companies/companies.module';
 import { JobModule } from './job/job.module';
-import { FileModule } from './file/file.module';
+import { FilesModule } from './files/files.module';
 import { ResumesModule } from './resumes/resumes.module';
 import { PermissionsModule } from './permissions/permissions.module';
 import { RolesModule } from './roles/roles.module';
 import { DatabasesModule } from './databases/databases.module';
+import { SubcribersModule } from './subcribers/subcribers.module';
+import { MailModule } from './mail/mail.module';
 @Module({
   imports: [
     MongooseModule.forRootAsync({
@@ -39,7 +41,7 @@ import { DatabasesModule } from './databases/databases.module';
 
     JobModule,
 
-    FileModule,
+    FilesModule,
 
     ResumesModule,
 
@@ -48,6 +50,10 @@ import { DatabasesModule } from './databases/databases.module';
     RolesModule,
 
     DatabasesModule,
+
+    SubcribersModule,
+
+    MailModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -11,15 +11,15 @@ import {
   ParseFilePipeBuilder,
   HttpStatus,
 } from '@nestjs/common';
-import { FileService } from './file.service';
+import { FilesService } from './files.service';
 import { CreateFileDto } from './dto/create-file.dto';
 import { UpdateFileDto } from './dto/update-file.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Public, ResponseMessage } from 'src/decorator/customize';
 
 @Controller('files')
-export class FileController {
-  constructor(private readonly fileService: FileService) {}
+export class FilesController {
+  constructor(private readonly fileService: FilesService) {}
 
   @Public()
   @Post('upload')
@@ -42,7 +42,10 @@ export class FileController {
     )
     file: Express.Multer.File,
   ) {
-    return file.filename;
+    return {
+      message: 'Upload successfully',
+      fileName: file.fieldname,
+    };
   }
 
   @Get()

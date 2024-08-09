@@ -23,10 +23,10 @@ export class ResumesController {
     return this.resumesService.create(createUserCvDto, user);
   }
 
-  @Post('by-user')
-  @ResponseMessage('Lấy ra cv từ user')
-  getResumeByUser(@User() user: IUser) {
-    return this.resumesService.getResumeByUser(user);
+  @Post('/by-user')
+  @ResponseMessage('Lấy thông tin hồ sơ theo user')
+  getResumesByUser(@User() user: IUser) {
+    return this.resumesService.findByUser(user);
   }
 
   @ResponseMessage('fetching cv')

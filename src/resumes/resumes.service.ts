@@ -46,8 +46,14 @@ export class ResumesService {
     };
   }
 
-  async getResumeByUser(user: IUser) {
-    return await this.resumeModel.find({ userId: user._id });
+  async findByUser(user: IUser) {
+    return await this.resumeModel
+      .find({ userId: user._id })
+      .sort('-createdAt')
+      .populate([
+        { path: 'companyId', select: { name: 1 } },
+        { path: 'jobId', select: { name: 1 } },
+      ]);
   }
 
   async findAll(currentPage: number, limit: number, qs: string) {
@@ -63,7 +69,6 @@ export class ResumesService {
       .limit(+limit)
       .skip(offset)
       .sort(sort as any)
-      .select('-password')
       .populate(population)
       .select(projection)
       .exec();
@@ -99,11 +104,11 @@ export class ResumesService {
     const updated = await this.resumeModel.findByIdAndUpdate(
       { _id },
       {
-        status: status,
+        status,
         updatedBy: { _id: user._id, email: user.email },
         $push: {
           history: {
-            status,
+            status: status,
             updatedAt: new Date(),
             updatedBy: {
               _id: user._id,
