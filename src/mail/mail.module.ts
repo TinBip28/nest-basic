@@ -14,7 +14,7 @@ import { MongooseModule } from '@nestjs/mongoose';
           secure: false,
           auth: {
             user: configService.get<string>('EMAIL'),
-            pass: configService.get<string>('EMAIL_PASSWORD'),
+            pass: configService.get<string>('PASSWORD_EMAIL'),
           },
         },
         //   template: {

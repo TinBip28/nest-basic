@@ -17,7 +17,7 @@ export class MailController {
     await this.mailerService.sendMail({
       to: 'lequangtin_t67@hus.edu.vn',
       from: '"Support team" <support@example.com>',
-      subject: 'Test mail',
+      subject: 'Test mail bla bla blas',
       html: '<b>Test mail</b>',
     });
   }
