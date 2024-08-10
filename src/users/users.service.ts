@@ -123,10 +123,9 @@ export class UsersService {
     return compareSync(password, hashedPassword);
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto, @User() user: IUser) {
-    updateUserDto.password = this.hashPassword(updateUserDto.password);
+  async update(updateUserDto: UpdateUserDto, @User() user: IUser) {
     const updateUser = await this.userModel.updateOne(
-      { _id: id },
+      { _id: updateUserDto._id },
       {
         ...updateUserDto,
         updatedBy: {

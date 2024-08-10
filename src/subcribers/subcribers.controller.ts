@@ -12,10 +12,16 @@ import {
 import { SubcribersService } from './subcribers.service';
 import { CreateSubcriberDto } from './dto/create-subcriber.dto';
 import { UpdateSubcriberDto } from './dto/update-subcriber.dto';
-import { Public, ResponseMessage, User } from 'src/decorator/customize';
+import {
+  Public,
+  ResponseMessage,
+  SkipCheckPermission,
+  User,
+} from 'src/decorator/customize';
 import { IUser } from 'src/users/users.interface';
+import { skip } from 'rxjs';
 
-@Controller('subcribers')
+@Controller('subscribers')
 export class SubcribersController {
   constructor(private readonly subcribersService: SubcribersService) {}
 
@@ -23,6 +29,13 @@ export class SubcribersController {
   @ResponseMessage('Create a subcriber')
   create(@Body() createSubcriberDto: CreateSubcriberDto, @User() user: IUser) {
     return this.subcribersService.create(createSubcriberDto, user);
+  }
+
+  @Post('skills')
+  @ResponseMessage("Get subcriber's skills")
+  @SkipCheckPermission()
+  getUserSkills(@User() user: IUser) {
+    return this.subcribersService.getSkills(user);
   }
 
   @Get()
@@ -42,14 +55,11 @@ export class SubcribersController {
     return this.subcribersService.findOne(id);
   }
 
-  @Patch(':id')
+  @Patch()
+  @SkipCheckPermission()
   @ResponseMessage('Update a subcriber')
-  update(
-    @Param('id') id: string,
-    @Body() updateSubcriberDto: UpdateSubcriberDto,
-    @User() user: IUser,
-  ) {
-    return this.subcribersService.update(id, updateSubcriberDto, user);
+  update(@Body() updateSubcriberDto: UpdateSubcriberDto, @User() user: IUser) {
+    return this.subcribersService.update(updateSubcriberDto, user);
   }
 
   @Delete(':id')

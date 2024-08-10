@@ -3,7 +3,14 @@ import { MailService } from './mail.service';
 import { MailController } from './mail.controller';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { ConfigService } from '@nestjs/config';
+import { join } from 'path';
+import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { MongooseModule } from '@nestjs/mongoose';
+import { Job, JobSchema } from 'src/job/schemas/job.schema';
+import {
+  Subcriber,
+  SubcriberSchema,
+} from 'src/subcribers/schemas/subcriber.schemas';
 
 @Module({
   imports: [
@@ -17,21 +24,29 @@ import { MongooseModule } from '@nestjs/mongoose';
             pass: configService.get<string>('PASSWORD_EMAIL'),
           },
         },
-        //   template: {
-        //     dir: join(__dirname, 'templates'),
-        //     adapter: new HandlebarsAdapter(),
-        //     options: {
-        //       strict: true,
-        //     },
-        //   },
+
+        template: {
+          dir: join(__dirname, 'templates'),
+          adapter: new HandlebarsAdapter(),
+          options: {
+            strict: true,
+          },
+        },
+
+        preview: {
+          open:
+            configService.get<string>('EMAIL_PREVIEW') === 'true'
+              ? true
+              : false,
+          dir: join(__dirname, 'templates'),
+        },
       }),
-      // }),
       inject: [ConfigService],
     }),
-    // MongooseModule.forFeature([
-    //   { name: Subscriber.name, schema: SubscriberSchema },
-    //   { name: Job.name, schema: JobSchema },
-    // ]),
+    MongooseModule.forFeature([
+      { name: Subcriber.name, schema: SubcriberSchema },
+      { name: Job.name, schema: JobSchema },
+    ]),
   ],
   controllers: [MailController],
   providers: [MailService],

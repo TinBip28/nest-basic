@@ -7,6 +7,8 @@ import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { TransformInterceptor } from './core/transform.interceptor';
 import cookieParser from 'cookie-parser';
+import helmet from 'helmet';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -17,10 +19,15 @@ async function bootstrap() {
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('ejs');
 
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+    }),
+  );
 
   //  update cookie parser
   app.use(cookieParser());
+  app.use(helmet());
 
   app.useGlobalInterceptors(new TransformInterceptor(reflector));
 
@@ -36,6 +43,16 @@ async function bootstrap() {
     origin: true,
     credentials: true,
   });
+
+  // config swagger
+  const config = new DocumentBuilder()
+    .setTitle('NestJS')
+    .setDescription('The NestJS API description')
+    .setVersion('1.0')
+    .addTag('nestjs')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('testing', app, document);
 
   await app.listen(configService.get<string>('PORT'));
 }

@@ -9,12 +9,17 @@ import { IUser } from 'src/users/users.interface';
 import mongoose from 'mongoose';
 import aqp from 'api-query-params';
 import { CompaniesService } from 'src/companies/companies.service';
+import { ConfigService } from '@nestjs/config';
+import { Company, CompanyDocument } from 'src/companies/schemas/company.schema';
 
 @Injectable()
 export class JobService {
   constructor(
     @InjectModel(Job.name) private jobModel: SoftDeleteModel<JobDocument>,
     private companyService: CompaniesService,
+    @InjectModel(Company.name)
+    private companyModel: SoftDeleteModel<CompanyDocument>,
+    private configService: ConfigService,
   ) {}
 
   async create(createJobDto: CreateJobDto, @User() user: IUser) {
@@ -39,14 +44,18 @@ export class JobService {
     return { _id: job._id, createdAt: job.createdAt };
   }
 
-  async findAll(currentPage: number, limit: number, qs: string) {
+  async findAll(currentPage: number, limit: number, qs: string, user: IUser) {
     const { filter, sort, projection, population } = aqp(qs);
     delete filter.current;
     delete filter.pageSize;
     let offset = (+currentPage - 1) * +limit;
     let defaultLimit = +limit ? +limit : 10;
+    if (user.role._id === this.configService.get<string>('HR')) {
+      filter['company._id'] = user.company?._id;
+    }
     const totalItems = (await this.jobModel.find(filter)).length;
     const totalPages = Math.ceil(totalItems / +limit);
+
     const result = await this.jobModel
       .find(filter)
       .limit(+limit)

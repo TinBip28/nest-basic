@@ -25,15 +25,15 @@ export class JobController {
     return this.jobService.create(createJobDto, user);
   }
 
-  @ResponseMessage('fetching jobs with pagination')
-  @Public()
+  @ResponseMessage('fetching jobs api')
   @Get()
   findAll(
     @Query('current') currentPage: string,
     @Query('pageSize') limit: string,
     @Query() qs: string,
+    @User() user: IUser,
   ) {
-    return this.jobService.findAll(+currentPage, +limit, qs);
+    return this.jobService.findAll(+currentPage, +limit, qs, user);
   }
 
   @ResponseMessage('get a job')

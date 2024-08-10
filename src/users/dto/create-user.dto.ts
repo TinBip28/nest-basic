@@ -1,5 +1,6 @@
 import { Type } from 'class-transformer';
 import {
+  IsDefined,
   IsEmail,
   IsMongoId,
   IsNotEmpty,
@@ -10,10 +11,6 @@ import {
 import mongoose from 'mongoose';
 
 class company {
-  // @IsNotEmpty()
-  // @IsEmail()
-  // email?: string;
-
   @IsNotEmpty()
   name: string;
 
@@ -46,11 +43,10 @@ export class CreateUserDto {
 
   phone: string;
 
-  @IsNotEmptyObject()
   @IsObject()
   @ValidateNested()
   @Type(() => company)
-  company!: company;
+  company: company;
 }
 
 export class RegisterDto {

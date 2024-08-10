@@ -41,14 +41,9 @@ export class UsersController {
   }
 
   @ResponseMessage('update a user')
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateUserDto: UpdateUserDto,
-    @User() user: IUser,
-  ) {
-    let updatedUser = this.usersService.update(id, updateUserDto, user);
-    return updatedUser;
+  @Patch()
+  update(@Body() updateUserDto: UpdateUserDto, @User() user: IUser) {
+    return this.usersService.update(updateUserDto, user);
   }
 
   @Delete(':id')

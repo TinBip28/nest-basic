@@ -69,20 +69,14 @@ export class SubcribersService {
     return await this.subcriberModel.find({ _id: id }).sort('-createdAt');
   }
 
-  async update(
-    id: string,
-    updateSubcriberDto: UpdateSubcriberDto,
-    user: IUser,
-  ) {
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      throw new BadRequestException('Id không hợp lệ');
-    }
+  async update(updateSubcriberDto: UpdateSubcriberDto, user: IUser) {
     const updated = await this.subcriberModel.updateOne(
-      { _id: id },
+      { email: user.email },
       {
         ...updateSubcriberDto,
         updatedBy: { _id: user._id, email: user.email },
       },
+      { upsert: true },
     );
     return updated;
   }
@@ -93,5 +87,10 @@ export class SubcribersService {
     }
     await this.subcriberModel.updateOne({ _id: id }, { deletedBy: user });
     return this.subcriberModel.softDelete({ _id: id });
+  }
+
+  async getSkills(user: IUser) {
+    const { email } = user;
+    return await this.subcriberModel.findOne({ email: email }, { skills: 1 });
   }
 }
