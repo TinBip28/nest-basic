@@ -761,7 +761,15 @@
   "resolved" "https://registry.npmjs.org/@nestjs/mapped-types/-/mapped-types-2.0.2.tgz"
   "version" "2.0.2"
 
-"@nestjs/mongoose@9.2.2":
+"@nestjs/microservices@^9.0.0", "@nestjs/microservices@^9.0.0 || ^10.0.0", "@nestjs/microservices@9.4.3":
+  "integrity" "sha512-piMw8d3C4ppc5St5AhQEtecMhyeBK2Q1VYk4AL3NKtG6U0fzz/6KLiETpWdKXmazeI/m7qac2upOvwmRzle0aA=="
+  "resolved" "https://registry.npmjs.org/@nestjs/microservices/-/microservices-9.4.3.tgz"
+  "version" "9.4.3"
+  dependencies:
+    "iterare" "1.2.1"
+    "tslib" "2.5.3"
+
+"@nestjs/mongoose@^9.0.0 || ^10.0.0", "@nestjs/mongoose@9.2.2":
   "integrity" "sha512-szNuSUCwwbQSSeiTh8+tZ9fHV4nuzHwBDROb0hX0s7crwY15TunCfwyKbB2XjqkEQWUAasDeCBuKOJSL9N6tTg=="
   "resolved" "https://registry.npmjs.org/@nestjs/mongoose/-/mongoose-9.2.2.tgz"
   "version" "9.2.2"
@@ -810,6 +818,14 @@
     "lodash" "4.17.21"
     "path-to-regexp" "3.2.0"
     "swagger-ui-dist" "5.1.0"
+
+"@nestjs/terminus@10.1.0":
+  "integrity" "sha512-SDAYPAm/helqRHj/tDKS6XKerUAXW8ihiWwu2LuxLVFVRZ1I+owVKvQj5IjwtCQ1DVMLjzyEeJYzIF+6c0LREg=="
+  "resolved" "https://registry.npmjs.org/@nestjs/terminus/-/terminus-10.1.0.tgz"
+  "version" "10.1.0"
+  dependencies:
+    "boxen" "5.1.2"
+    "check-disk-space" "3.4.0"
 
 "@nestjs/testing@9.0.0":
   "integrity" "sha512-lBBzZvJWaYutYC1wOEKf4KOis/wxudBX0pVLZxzHmtbkeC2EQgQCbyKA88m1R9QeYTt9CmVMg4eyb+WeOADZiQ=="
@@ -1840,6 +1856,20 @@
     "type-fest" "^0.8.1"
     "widest-line" "^3.1.0"
 
+"boxen@5.1.2":
+  "integrity" "sha512-9gYgQKXx+1nP8mP7CzFyaUARhg7D3n1dF/FnErWmu9l6JvGpNUN278h0aSb+QjoiKSWG+iZ3uHrcqk0qrY9RQQ=="
+  "resolved" "https://registry.npmjs.org/boxen/-/boxen-5.1.2.tgz"
+  "version" "5.1.2"
+  dependencies:
+    "ansi-align" "^3.0.0"
+    "camelcase" "^6.2.0"
+    "chalk" "^4.1.0"
+    "cli-boxes" "^2.2.1"
+    "string-width" "^4.2.2"
+    "type-fest" "^0.20.2"
+    "widest-line" "^3.1.0"
+    "wrap-ansi" "^7.0.0"
+
 "brace-expansion@^1.1.7":
   "integrity" "sha512-iCuPHDFgrHX7H2vEI/5xpz07zSHB00TpugqhmYtVmMO6518mCuRMoOYFldEBl0g187ufozdaHgWKcYFb61qGiA=="
   "resolved" "https://registry.npmjs.org/brace-expansion/-/brace-expansion-1.1.11.tgz"
@@ -2012,6 +2042,11 @@
   "resolved" "https://registry.npmjs.org/charenc/-/charenc-0.0.2.tgz"
   "version" "0.0.2"
 
+"check-disk-space@3.4.0":
+  "integrity" "sha512-drVkSqfwA+TvuEhFipiR1OC9boEGZL5RrWvVsOthdcvQNXyCCuKkEiTOTXZ7qxSf/GLwq4GvzfrQD/Wz325hgw=="
+  "resolved" "https://registry.npmjs.org/check-disk-space/-/check-disk-space-3.4.0.tgz"
+  "version" "3.4.0"
+
 "cheerio-select@^2.1.0":
   "integrity" "sha512-9v9kG0LvzrlcungtnJtpGNxY+fzECQKhK4EGJX2vByejiMX84MFNQw4UxPJl3bFbTMw+Dfs37XaIkCwTZfLh4g=="
   "resolved" "https://registry.npmjs.org/cheerio-select/-/cheerio-select-2.1.0.tgz"
@@ -2088,7 +2123,7 @@
   dependencies:
     "source-map" "~0.6.0"
 
-"cli-boxes@^2.2.0":
+"cli-boxes@^2.2.0", "cli-boxes@^2.2.1":
   "integrity" "sha512-y4coMcylgSCdVinjiDBuR8PCC2bLjyGTwEmPb9NHR/QaNU6EUOXcTY/s6VjGMD6ENSEaeQYHCY0GNGS5jfMwPw=="
   "resolved" "https://registry.npmjs.org/cli-boxes/-/cli-boxes-2.2.1.tgz"
   "version" "2.2.1"
@@ -5957,7 +5992,7 @@
   dependencies:
     "resolve" "^1.1.6"
 
-"reflect-metadata@^0.1.12", "reflect-metadata@^0.1.13", "reflect-metadata@0.1.13":
+"reflect-metadata@^0.1.12", "reflect-metadata@^0.1.13", "reflect-metadata@0.1.13", "reflect-metadata@0.1.x":
   "integrity" "sha512-Ts1Y/anZELhSsjMcU605fU9RE4Oi3p5ORujwbIKXfWa+0Zxs510Qrmrce5/Jowq3cHSZSJqBjypxmHarc+vEWg=="
   "resolved" "https://registry.npmjs.org/reflect-metadata/-/reflect-metadata-0.1.13.tgz"
   "version" "0.1.13"
@@ -6087,7 +6122,7 @@
   dependencies:
     "queue-microtask" "^1.2.2"
 
-"rxjs@^6.0.0 || ^7.2.0", "rxjs@^7.0.0", "rxjs@^7.1.0", "rxjs@7.2.0":
+"rxjs@^6.0.0 || ^7.2.0", "rxjs@^7.0.0", "rxjs@^7.1.0", "rxjs@7.2.0", "rxjs@7.x":
   "integrity" "sha512-aX8w9OpKrQmiPKfT1bqETtUr9JygIz6GZ+gql8v7CijClsP0laoFUdKzxFAoWuRdSlOdU2+crss+cMf+cqMTnw=="
   "resolved" "https://registry.npmjs.org/rxjs/-/rxjs-7.2.0.tgz"
   "version" "7.2.0"
@@ -6427,7 +6462,7 @@
     "is-fullwidth-code-point" "^3.0.0"
     "strip-ansi" "^6.0.1"
 
-"string-width@^4.0.0", "string-width@^4.1.0", "string-width@^4.2.0", "string-width@^4.2.3":
+"string-width@^4.0.0", "string-width@^4.1.0", "string-width@^4.2.0", "string-width@^4.2.2", "string-width@^4.2.3":
   "integrity" "sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g=="
   "resolved" "https://registry.npmjs.org/string-width/-/string-width-4.2.3.tgz"
   "version" "4.2.3"
@@ -6744,6 +6779,11 @@
   "integrity" "sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ=="
   "resolved" "https://registry.npmjs.org/tslib/-/tslib-2.4.0.tgz"
   "version" "2.4.0"
+
+"tslib@2.5.3":
+  "integrity" "sha512-mSxlJJwl3BMEQCUNnxXBU9jP4JBktcEGhURcPR6VQVlnP0FdDEsIaz0C35dXNGLyRfrATNofF0F5p2KPxQgB+w=="
+  "resolved" "https://registry.npmjs.org/tslib/-/tslib-2.5.3.tgz"
+  "version" "2.5.3"
 
 "tsutils@^3.21.0":
   "integrity" "sha512-mHKK3iUXL+3UF6xL5k0PEhKRUBKPBCv/+RkEOpjRWxxx27KKRBmmA60A9pgOUvMi8GKhRMPEmjBRPzs2W7O1OA=="

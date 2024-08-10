@@ -17,6 +17,7 @@ import { SubcribersModule } from './subcribers/subcribers.module';
 import { MailModule } from './mail/mail.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ThrottlerException, ThrottlerModule } from '@nestjs/throttler';
+import { HealthModule } from './health/health.module';
 @Module({
   imports: [
     ScheduleModule.forRoot(),
@@ -61,6 +62,8 @@ import { ThrottlerException, ThrottlerModule } from '@nestjs/throttler';
     SubcribersModule,
 
     MailModule,
+
+    HealthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
