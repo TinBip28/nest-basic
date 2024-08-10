@@ -5,8 +5,11 @@ import { LocalAuthGuard } from './local-auth.guard';
 import { Request, Response } from 'express';
 import { IUser } from 'src/users/users.interface';
 import { RolesService } from 'src/roles/roles.service';
-import { ThrottlerGuard } from '@nestjs/throttler';
+import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { UserLogionDto } from 'src/users/dto/create-user.dto';
 
+@ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -17,6 +20,8 @@ export class AuthController {
   @Public()
   @UseGuards(LocalAuthGuard)
   @UseGuards(ThrottlerGuard)
+  @Throttle(3, 30)
+  @ApiBody({ type: UserLogionDto })
   @Post('/login')
   @ResponseMessage('Đăng nhập')
   handleLogin(@Req() req, @Res({ passthrough: true }) response: Response) {
